@@ -1,6 +1,6 @@
 package ca.tetervak.studentdata.service;
 
-import ca.tetervak.studentdata.repository.StudentDataRepositoryJpa;
+import ca.tetervak.studentdata.repository.StudentDataRepository;
 import ca.tetervak.studentdata.repository.StudentEntity;
 import ca.tetervak.studentdata.model.StudentForm;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,10 @@ import java.util.Optional;
 @Service
 public class StudentDataServiceJpaImpl implements StudentDataService {
 
-    private final StudentDataRepositoryJpa studentDataRepositoryJpa;
+    private final StudentDataRepository studentDataRepository;
 
-    StudentDataServiceJpaImpl(StudentDataRepositoryJpa studentDataRepositoryJpa){
-        this.studentDataRepositoryJpa = studentDataRepositoryJpa;
+    StudentDataServiceJpaImpl(StudentDataRepository studentDataRepository){
+        this.studentDataRepository = studentDataRepository;
     }
 
     private static void copyFormToEntity(StudentForm form, StudentEntity student){
@@ -41,13 +41,13 @@ public class StudentDataServiceJpaImpl implements StudentDataService {
     public void insertStudentForm(StudentForm form) {
         StudentEntity student = new StudentEntity();
         copyFormToEntity(form, student);
-        student = studentDataRepositoryJpa.save(student);
+        student = studentDataRepository.save(student);
         form.setId(student.getId());
     }
 
     public List<StudentForm> getAllStudentForms() {
         List<StudentForm> formList = new ArrayList<>();
-        List<StudentEntity> studentList = studentDataRepositoryJpa.findAll();
+        List<StudentEntity> studentList = studentDataRepository.findAll();
         for(StudentEntity student: studentList){
             StudentForm form = new StudentForm();
             copyEntityToForm(student, form);
@@ -57,15 +57,15 @@ public class StudentDataServiceJpaImpl implements StudentDataService {
     }
 
     public void deleteAllStudentForms() {
-        studentDataRepositoryJpa.deleteAll();
+        studentDataRepository.deleteAll();
     }
 
     public void deleteStudentForm(int id) {
-        studentDataRepositoryJpa.deleteById(id);
+        studentDataRepository.deleteById(id);
     }
 
     public StudentForm getStudentForm(int id) {
-        Optional<StudentEntity> result = studentDataRepositoryJpa.findById(id);
+        Optional<StudentEntity> result = studentDataRepository.findById(id);
         if(result.isPresent()){
             StudentForm form = new StudentForm();
             StudentEntity student = result.get();
@@ -76,11 +76,11 @@ public class StudentDataServiceJpaImpl implements StudentDataService {
     }
 
     public void updateStudentForm(StudentForm form) {
-        Optional<StudentEntity> result = studentDataRepositoryJpa.findById(form.getId());
+        Optional<StudentEntity> result = studentDataRepository.findById(form.getId());
         if(result.isPresent()){
             StudentEntity student = result.get();
             copyFormToEntity(form, student);
-            studentDataRepositoryJpa.save(student);
+            studentDataRepository.save(student);
             //studentRepository.flush();
         }
     }
