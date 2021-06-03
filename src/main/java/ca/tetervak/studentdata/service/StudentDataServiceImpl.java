@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StudentDataServiceJpaImpl implements StudentDataService {
+public class StudentDataServiceImpl implements StudentDataService {
 
     private final StudentDataRepository studentDataRepository;
 
-    StudentDataServiceJpaImpl(StudentDataRepository studentDataRepository){
+    StudentDataServiceImpl(StudentDataRepository studentDataRepository){
         this.studentDataRepository = studentDataRepository;
     }
 
