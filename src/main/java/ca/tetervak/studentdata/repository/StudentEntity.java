@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "student")
-public class StudentEntityJpa implements Serializable {
+public class StudentEntity implements Serializable {
 
     @Column(name = "id")
     @Id
@@ -30,7 +30,7 @@ public class StudentEntityJpa implements Serializable {
     @Column(name = "program_internship")
     private Boolean programInternship = false;
 
-    public StudentEntityJpa(){
+    public StudentEntity(){
     };
 
     public Integer getId() {

@@ -1,7 +1,7 @@
 package ca.tetervak.studentdata.service;
 
 import ca.tetervak.studentdata.repository.StudentDataRepositoryJpa;
-import ca.tetervak.studentdata.repository.StudentEntityJpa;
+import ca.tetervak.studentdata.repository.StudentEntity;
 import ca.tetervak.studentdata.model.StudentForm;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class StudentDataServiceJpaImpl implements StudentDataService {
         this.studentDataRepositoryJpa = studentDataRepositoryJpa;
     }
 
-    private static void copyFormToEntity(StudentForm form, StudentEntityJpa student){
+    private static void copyFormToEntity(StudentForm form, StudentEntity student){
         //student.setId(form.getId());
         student.setFirstName(form.getFirstName());
         student.setLastName(form.getLastName());
@@ -28,7 +28,7 @@ public class StudentDataServiceJpaImpl implements StudentDataService {
         student.setProgramInternship(form.isProgramInternship());
     }
 
-    private static void copyEntityToForm(StudentEntityJpa student, StudentForm form){
+    private static void copyEntityToForm(StudentEntity student, StudentForm form){
         form.setId(student.getId());
         form.setFirstName(student.getFirstName());
         form.setLastName(student.getLastName());
@@ -39,7 +39,7 @@ public class StudentDataServiceJpaImpl implements StudentDataService {
     }
 
     public void insertStudentForm(StudentForm form) {
-        StudentEntityJpa student = new StudentEntityJpa();
+        StudentEntity student = new StudentEntity();
         copyFormToEntity(form, student);
         student = studentDataRepositoryJpa.save(student);
         form.setId(student.getId());
@@ -47,8 +47,8 @@ public class StudentDataServiceJpaImpl implements StudentDataService {
 
     public List<StudentForm> getAllStudentForms() {
         List<StudentForm> formList = new ArrayList<>();
-        List<StudentEntityJpa> studentList = studentDataRepositoryJpa.findAll();
-        for(StudentEntityJpa student: studentList){
+        List<StudentEntity> studentList = studentDataRepositoryJpa.findAll();
+        for(StudentEntity student: studentList){
             StudentForm form = new StudentForm();
             copyEntityToForm(student, form);
             formList.add(form);
@@ -65,10 +65,10 @@ public class StudentDataServiceJpaImpl implements StudentDataService {
     }
 
     public StudentForm getStudentForm(int id) {
-        Optional<StudentEntityJpa> result = studentDataRepositoryJpa.findById(id);
+        Optional<StudentEntity> result = studentDataRepositoryJpa.findById(id);
         if(result.isPresent()){
             StudentForm form = new StudentForm();
-            StudentEntityJpa student = result.get();
+            StudentEntity student = result.get();
             copyEntityToForm(student, form);
             return form;
         }
@@ -76,9 +76,9 @@ public class StudentDataServiceJpaImpl implements StudentDataService {
     }
 
     public void updateStudentForm(StudentForm form) {
-        Optional<StudentEntityJpa> result = studentDataRepositoryJpa.findById(form.getId());
+        Optional<StudentEntity> result = studentDataRepositoryJpa.findById(form.getId());
         if(result.isPresent()){
-            StudentEntityJpa student = result.get();
+            StudentEntity student = result.get();
             copyFormToEntity(form, student);
             studentDataRepositoryJpa.save(student);
             //studentRepository.flush();
